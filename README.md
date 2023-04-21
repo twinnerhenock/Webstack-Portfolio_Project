@@ -17,23 +17,20 @@ _For this project, look at these concepts:_
 * [PostgreSQL Tutorial](https://www.postgresqltutorial.com/)
 * [containerize your application](https://docs.docker.com/get-started/)
 
-## General Requirement & Setup
+## General Setup
 
 #### All files are Python Scripts
 
-* The first line of files is exactly shebang `#!/usr/bin/env python3`
+* The first line of files contains shebang `#!/usr/bin/env python3`
 * Code use the `pycodestyle` style (version 2.5)
-* All modules have documentation (`python3 -c 'print(__import__("my_module").__doc__)'`)
-* All classes have documentation (`python3 -c 'print(__import__("my_module").MyClass.__doc__)'`)
-* All functions (inside and outside a class) have a documentation (`python3 -c 'print(__import__("my_module").my_function.__doc__)'` and `python3 -c 'print(__import__("my_module").MyClass.my_function.__doc__)'`)
 
 This project contains tasks for learning to create backend api service for social media with FastAPI.
 
 ## API Layout
 
-+ [x]  **app**<br/>[app](app folder) contains router folder and a Python scripts that sets up a basic API app with the following files:
-  + [routers](routers) contains 'auth.py', 'post.py', 'user.py', and 'vote.py' python files which contains the api's different endpoints.
-    + [auth.py](auth.py) contains '/login' endpoint. This function accepts user's login credentials from postgres database and depends on the		 		session maker class to start and drop database table. If the input user does not exist or has wrong credentials, HTT			      P exception is raised. Otherwise, access token is generated to enable user login.
++ [x]  **app**<br/> The app folder contains router folder and a Python scripts that sets up a basic API app with the following files:
+  + The routers contains 'auth.py', 'post.py', 'user.py', and 'vote.py' python files which contains the api's different endpoints.
+    + [[auth.py](https://github.com/twinnerhenock/Webstack-Portfolio_Project/blob/main/app/routers/auth.py)](auth.py) contains '/login' endpoint. This function accepts user's login credentials from postgres database and depends on the		 		session maker class to start and drop database table. If the input user does not exist or has wrong credentials, HTT			      P exception is raised. Otherwise, access token is generated to enable user login.
   + [main.py](main.py) Creates an app instance from FastAPI class imported from fastapi module. The app instance has CORSMiddleware configured to accept resources outside of a given domain. The app instance also regisers post.router, user.router, auth.router and vote.router routes. The root function returns home page for the fastapi application with end point '/' that simply outputs "Tena yistilign lehulachum"(Welcome in Amharic Language).
   + [config.py](config.py) The config file contains configuration file for environment variable. The environemnt variables are defined inside Settings class with base model 'BaseSettings' inherited from pydantic module. After defining the class, settings variable is instantiated using the constructed Settings class to be imported inside this folder.
   + [database.py](database.py) The database.py file contains our postgres database configuration URL and engine. The settings variable is used to pass the environment vairables to start our api database. The postgres database is integrated with the app instance by passing the defined 'SQLALCHEMY_DATABASE_URL' to the create engine class from sqlalchemy module. Sqlalchemy is postgres's ORM(obejct relational mapping) to communicate user's CRUD data requests to the fastapi database. Another function get_db manages the database session on each data operation using sessionmaker base class.
