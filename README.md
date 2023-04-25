@@ -48,6 +48,7 @@ access to the values within the .init file in use. The run_migrations_offline fu
   + [versions](https://github.com/twinnerhenock/Webstack-Portfolio_Project/tree/main/alembic/versions) This folder will contain every database new updates with separate files and 'alembic head' command followed by the respective version number allows easy databse updates and version control. 
    
 + [x]  **tests**<br/> The tests folder contains pytest testing modules for the parts of the fast api. Pytest is a testing framework based on python. It is mainly used to write API test cases. The folder contains pytest modules for testing post, user, vote and database classes.
+  + **Installation**
   + Install the pytest:
     ```powershell
     pip3 install pytest
