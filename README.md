@@ -67,7 +67,16 @@ access to the values within the .init file in use. The run_migrations_offline fu
         db.close()
     ```
     
-   + [test_posts.py](https://github.com/twinnerhenock/Webstack-Portfolio_Project/blob/main/tests/test_posts.py) Contains test functions to assert user's created, deleted, updated and retrieved posts. The py test parametrize decorator can be used pass in multiple assertion arguments as mock test as shown below.
+   + [test_posts.py](https://github.com/twinnerhenock/Webstack-Portfolio_Project/blob/main/tests/test_posts.py) Contains test functions to assert user's created, deleted, updated and retrieved posts. The py test parametrize decorator can be used pass in multiple assertion arguments as mock test as shown below. Parameterizing of a test is done to run the test against multiple sets of inputs. We can do this by using the following marker −
+     ```powershell
+     @pytest.mark.parametrize
+     ```
+     Executed by running the following command −
+     ```
+     Pytest -k test_posts -v
+     ```
+     The test_create_post function is asserted for HTTP request status code, post attributes 'title', 'content', 'published' and 'owner_id'.
+
      ```powershell
      @pytest.mark.parametrize("title, content, published", [
          ("awesome new title", "awesome new content", True),
