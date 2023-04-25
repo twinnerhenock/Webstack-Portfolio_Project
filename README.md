@@ -32,8 +32,8 @@ This project contains tasks for learning to create backend api service for socia
   + The routers contains 'auth.py', 'post.py', 'user.py', and 'vote.py' python files which contains the api's different endpoints.
     + [auth.py](https://github.com/twinnerhenock/Webstack-Portfolio_Project/blob/main/app/routers/auth.py) contains '/login' endpoint. This function accepts user's login credentials from postgres database and depends on the	session maker class to start and drop database table. If the input user does not exist or has wrong credentials, HTTP exception is raised. Otherwise, access token is generated to enable user login.
     + [post.py](https://github.com/twinnerhenock/Webstack-Portfolio_Project/blob/main/app/routers/post.py) contains different user interations endpoints: 'create_post' - '/', 'get_post' - '/', 'get_one_post' - '/{id}', 'delete_post' - '/{id}', and 'update_post' - '/{id}' all with the '/posts' prefix defined in the APIRouter instance. All endpoints depends on 'oauth2.get_current_user' function to limit any user to be authenticted before making any CRUD operations. The 'get_posts' endpoint which retrieves all posts of a specific user contains default query parameter for flexible user experience.   
-    + [user.py](https://github.com/twinnerhenock/Webstack-Portfolio_Project/blob/main/app/routers/user.py)
-    + [vote.py](https://github.com/twinnerhenock/Webstack-Portfolio_Project/blob/main/app/routers/vote.py)
+    + [user.py](https://github.com/twinnerhenock/Webstack-Portfolio_Project/blob/main/app/routers/user.py) contains different user interations endpoints: 'create_user' - '/' and 'get_user' - '/' with 'users' prefix defined in the APIRouter instance. The 'create_user' endpoint accepts UserCreate response model from schemas for creating default attributes and stores in the database. 
+    + [vote.py](https://github.com/twinnerhenock/Webstack-Portfolio_Project/blob/main/app/routers/vote.py) Contains '/vote' endpoint to enable users like or dislike a specific post. The endpoint takes two positional arguments: 'vote' and 'current_user'. The current_user argument makes sure current user is  authenticted before making any CRUD operations. 
   + [main.py](https://github.com/twinnerhenock/Webstack-Portfolio_Project/blob/main/app/main.py) Creates an app instance from FastAPI class imported from fastapi module. The app instance has CORSMiddleware configured to accept resources outside of a given domain. The app instance also regisers post.router, user.router, auth.router and vote.router routes. The root function returns home page for the fastapi application with end point '/' that simply outputs "Tena yistilign lehulachum"(Welcome in Amharic Language).
   + [config.py](https://github.com/twinnerhenock/Webstack-Portfolio_Project/blob/main/app/config.py) The config file contains configuration file for environment variable. The environemnt variables are defined inside Settings class with base model 'BaseSettings' inherited from pydantic module. After defining the class, settings variable is instantiated using the constructed Settings class to be imported inside this folder.
   + [database.py](https://github.com/twinnerhenock/Webstack-Portfolio_Project/blob/main/app/database.py) The database.py file contains our postgres database configuration URL and engine. The settings variable is used to pass the environment vairables to start our api database. The postgres database is integrated with the app instance by passing the defined 'SQLALCHEMY_DATABASE_URL' to the create engine class from sqlalchemy module. Sqlalchemy is postgres's ORM(obejct relational mapping) to communicate user's CRUD data requests to the fastapi database. Another function get_db manages the database session on each data operation using sessionmaker base class.
@@ -42,20 +42,17 @@ This project contains tasks for learning to create backend api service for socia
   + [schemas.py](https://github.com/twinnerhenock/Webstack-Portfolio_Project/blob/main/app/schemas.py) Contains user response model classes to be passed to router's decorator functions inside the router folders. On each user's requests to the api: 'post' 'login' 'signup' 'vote' 'delete' and 'update', the api will respond this response models to the users. A base model is imported from pydantic model to be inherited to the class PostBase. 
   + [utils.py](https://github.com/twinnerhenock/Webstack-Portfolio_Project/blob/main/app/utils.py) Contains a proxy object that makes it easy to use multiple PasswordHash objects at the same time. Instances of this class can be created by calling the constructor with the appropriate keywords, or by using one of the alternate constructors, which can load directly from a string or a local file. The CryptContext class accepts 'bcrypt' schemes that is responsible to hash users password passed to the hash function which will return hashed password.
        
-+ [x] 5. **Mock logging in**
-  + Copy [4-app.py](4-app.py) into [5-app.py](5-app.py) and [templates/4-index.html](templates/4-index.html) into [templates/5-index.html](templates/5-index.html).
-  + Creating a user login system is outside the scope of this project. To emulate a similar behavior, copy the following user table into [5-app.py](5-app.py).
-    ```python
-    users = {
-        1: {"name": "Balou", "locale": "fr", "timezone": "Europe/Paris"},
-        2: {"name": "Beyonce", "locale": "en", "timezone": "US/Central"},
-        3: {"name": "Spock", "locale": "kg", "timezone": "Vulcan"},
-        4: {"name": "Teletubby", "locale": None, "timezone": "Europe/London"},
-    }
++ [x]  **alembic**<br/> The alembic folder contains versions folder and env.py file that sets up enviroment configuration for the API app:
+  + [env.py]((https://github.com/twinnerhenock/Webstack-Portfolio_Project/blob/main/alembic/env.py) Contains alembic Config object, which provides
+access to the values within the .init file in use. The run_migrations_offline function configures the context with just a URL and not an Engine, though an Engine is acceptable here as well. By skipping the Engine creation, we don't even need a DBAPI to be available. Calls to context.execute() here emit the given string to the script output. The run_migrations_online function creates an Engine and associate a connection with the context.
+  + [versions](https://github.com/twinnerhenock/Webstack-Portfolio_Project/tree/main/alembic/versions) This folder will contain every database new updates with separate files and 'alembic head' command followed by the respective version number allows easy databse updates and version control. 
+   
++ [x]  **tests**<br/> The tests folder contains pytest testing modules for the parts of the fast api. Pytest is a testing framework based on python. It is mainly used to write API test cases. The folder contains pytest modules for testing post, user, vote and database classes.
+  + Install the pytest:
+    ```powershell
+    pip3 install pytest
     ```
-  + This will mock a database user table. Logging in will be mocked by passing `login_as` URL query parameter containing the user ID to log in as.
-  + Define a `get_user` function that returns a user dictionary or `None` if the ID cannot be found or if `login_as` was not passed.
-  + Define a `before_request` function and use the `app.before_request` decorator to make it be executed before all other functions. `before_request` should use `get_user` to find a user if any, and set it as a global on `flask.g.user`.
+  + [conftest.py](https://github.com/twinnerhenock/Webstack-Portfolio_Project/blob/main/tests/conftest.py)
   
 
 + [x] 6. **Use user locale**
