@@ -102,6 +102,22 @@ access to the values within the .init file in use. The run_migrations_offline fu
 
 + [x] **docker-compose.yml**
   A a container is a sandboxed process on your machine that is isolated from all other processes on the host machine. That isolation leverages kernel namespaces and cgroups, features that have been in Linux for a long time. Docker has worked to make these capabilities approachable and easy to use. When running a container, it uses an isolated filesystem. This custom filesystem is provided by a container image. Since the image contains the container’s filesystem, it must contain everything needed to run an application - all dependencies, configurations, scripts, binaries, etc. The image also contains other configuration for the container, such as environment variables, a default command to run, and other metadata as shown below.
++ [x] **Installing Docker on Ubuntu**<br/>
++ Uninstall the tech preview or beta version of Docker Desktop for Linux. Run:
+  ```powershell
+  sudo apt remove docker-desktop
+  ```
+  Recommended approach to install Docker Desktop on Ubuntu:
+  ```powershell
+  sudo apt-get update
+  sudo apt-get install ./docker-desktop-<version>-<arch>.deb
+  docker compose version
+  ```
+  To start Docker Desktop:
+  ```powershell
+  systemctl --user start docker-desktop
+  ```
++ The image also contains other configuration for the container, such as environment variables, a default command to run, and other metadata as shown     below.
   ```powershell
      version: "3"
      services: 
@@ -129,4 +145,9 @@ access to the values within the .init file in use. The run_migrations_offline fu
              POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
              POSTGRES_DB: ${POSTGRES_DB}
   ```
+
++ [x] **Author**<br/>
+   + Henock Yared
+   
+
         
