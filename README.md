@@ -53,6 +53,10 @@ access to the values within the .init file in use. The run_migrations_offline fu
     ```powershell
     pip3 install pytest
     ```
+    Confirm the installation using the following command to display the help section of pytest.
+    ```
+    pytest -h
+    ```
   + [conftest.py](https://github.com/twinnerhenock/Webstack-Portfolio_Project/blob/main/tests/conftest.py) Different fixtures are defined in this file to make them accessible across multiple test files. Test fixture 'session' is defined to bind database engine on every test as shown below. With the same token, test fixtures 'client', 'test_user', 'test_user2' and 'token' are defined and passed as arguments in other test modules for simplicity.
     ```powershell
     @pytest.fixture()
@@ -96,13 +100,33 @@ access to the values within the .init file in use. The run_migrations_offline fu
      ```
   
 
-+ [x] 6. **Use user locale**
-  + Copy [5-app.py](5-app.py) into [6-app.py](6-app.py) and [templates/5-index.html](templates/5-index.html) into [templates/6-index.html](templates/6-index.html).
-  + Change your `get_locale` function to use a user’s preferred locale if it is supported.
-  + The order of priority should be:
-    1. Locale from URL parameters.
-    2. Locale from user settings.
-    3. Locale from request header.
-    4. Default locale.
-  + Test by logging in as different users.<br/>
-    ![Hello World! in French with a logged in message](assets/task_6_1.png)
++ [x] **docker-compose.yml**
+  A a container is a sandboxed process on your machine that is isolated from all other processes on the host machine. That isolation leverages kernel namespaces and cgroups, features that have been in Linux for a long time. Docker has worked to make these capabilities approachable and easy to use. When running a container, it uses an isolated filesystem. This custom filesystem is provided by a container image. Since the image contains the container’s filesystem, it must contain everything needed to run an application - all dependencies, configurations, scripts, binaries, etc. The image also contains other configuration for the container, such as environment variables, a default command to run, and other metadata as shown below.
+  ```powershell
+     version: "3"
+     services: 
+         api:
+            image: twinnerhenock/fastapi
+         depends_on:
+            - db
+         ports:
+            - 5000:8000  
+         volumes:
+            - ./:/usr/src/app
+            
+         environment:
+            DATABASE_HOSTNAME: ${DATABASE_HOSTNAME}
+            DATABASE_PORT: ${DATABASE_PORT}
+            DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+            DATABASE_NAME: ${DATABASE_NAME}
+            DATABASE_USERNAME: ${DATABASE_USERNAME}
+            SECRET_KEY: ${SECRET_KEY}
+            ALGORITHM: ${ALGORITHM}
+            ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES}  
+       db:   
+         image: twinnerhenock/fastapi
+         environment:
+         POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+         POSTGRES_DB: ${POSTGRES_DB}
+  ```
+        
