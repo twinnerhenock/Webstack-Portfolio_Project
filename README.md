@@ -107,26 +107,26 @@ access to the values within the .init file in use. The run_migrations_offline fu
      services: 
          api:
             image: twinnerhenock/fastapi
-         depends_on:
-            - db
-         ports:
-            - 5000:8000  
-         volumes:
-            - ./:/usr/src/app
+            depends_on:
+                - db
+            ports:
+                - 5000:8000  
+            volumes:
+                - ./:/usr/src/app
             
-         environment:
-            DATABASE_HOSTNAME: ${DATABASE_HOSTNAME}
-            DATABASE_PORT: ${DATABASE_PORT}
-            DATABASE_PASSWORD: ${DATABASE_PASSWORD}
-            DATABASE_NAME: ${DATABASE_NAME}
-            DATABASE_USERNAME: ${DATABASE_USERNAME}
-            SECRET_KEY: ${SECRET_KEY}
-            ALGORITHM: ${ALGORITHM}
-            ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES}  
-       db:   
-         image: twinnerhenock/fastapi
-         environment:
-         POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-         POSTGRES_DB: ${POSTGRES_DB}
+            environment:
+                DATABASE_HOSTNAME: ${DATABASE_HOSTNAME}
+                DATABASE_PORT: ${DATABASE_PORT}
+                DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+                DATABASE_NAME: ${DATABASE_NAME}
+                DATABASE_USERNAME: ${DATABASE_USERNAME}
+                SECRET_KEY: ${SECRET_KEY}
+                ALGORITHM: ${ALGORITHM}
+                ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES}  
+         db:   
+           image: twinnerhenock/fastapi
+           environment:
+             POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+             POSTGRES_DB: ${POSTGRES_DB}
   ```
         
