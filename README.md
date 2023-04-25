@@ -43,7 +43,7 @@ This project contains tasks for learning to create backend api service for socia
   + [utils.py](https://github.com/twinnerhenock/Webstack-Portfolio_Project/blob/main/app/utils.py) Contains a proxy object that makes it easy to use multiple PasswordHash objects at the same time. Instances of this class can be created by calling the constructor with the appropriate keywords, or by using one of the alternate constructors, which can load directly from a string or a local file. The CryptContext class accepts 'bcrypt' schemes that is responsible to hash users password passed to the hash function which will return hashed password.
        
 + [x]  **alembic**<br/> The alembic folder contains versions folder and env.py file that sets up enviroment configuration for the API app:
-  + [env.py]((https://github.com/twinnerhenock/Webstack-Portfolio_Project/blob/main/alembic/env.py) Contains alembic Config object, which provides
+  + [env.py](https://github.com/twinnerhenock/Webstack-Portfolio_Project/blob/main/alembic/env.py) Contains alembic Config object, which provides
 access to the values within the .init file in use. The run_migrations_offline function configures the context with just a URL and not an Engine, though an Engine is acceptable here as well. By skipping the Engine creation, we don't even need a DBAPI to be available. Calls to context.execute() here emit the given string to the script output. The run_migrations_online function creates an Engine and associate a connection with the context.
   + [versions](https://github.com/twinnerhenock/Webstack-Portfolio_Project/tree/main/alembic/versions) This folder will contain every database new updates with separate files and 'alembic head' command followed by the respective version number allows easy databse updates and version control. 
    
@@ -53,7 +53,38 @@ access to the values within the .init file in use. The run_migrations_offline fu
     ```powershell
     pip3 install pytest
     ```
-  + [conftest.py](https://github.com/twinnerhenock/Webstack-Portfolio_Project/blob/main/tests/conftest.py)
+  + [conftest.py](https://github.com/twinnerhenock/Webstack-Portfolio_Project/blob/main/tests/conftest.py) Different fixtures are defined in this file to make them accessible across multiple test files. Test fixture 'session' is defined to bind database engine on every test as shown below. With the same token, test fixtures 'client', 'test_user', 'test_user2' and 'token' are defined and passed as arguments in other test modules for simplicity.
+    ```powershell
+    @pytest.fixture()
+    def session():
+    print("my session fixture ran")
+    Base.metadata.drop_all(bind=engine)
+    Base.metadata.create_all(bind=engine)
+    db = TestingSessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+    ```
+    
+   + [test_posts.py](https://github.com/twinnerhenock/Webstack-Portfolio_Project/blob/main/tests/test_posts.py) Contains test functions to assert user's created, deleted, updated and retrieved posts. The py test parametrize decorator can be used pass in multiple assertion arguments as mock test as shown below.
+     ```powershell
+     @pytest.mark.parametrize("title, content, published", [
+         ("awesome new title", "awesome new content", True),
+         ("favorite pizza", "i love pepperoni", False),
+         ("tallest skyscrapers", "wahoo", True),
+         ])
+     def test_create_post(authorized_client, test_user, test_posts, title, content, published):
+         res = authorized_client.post(
+         "/posts/", json={"title": title, "content": content, "published": published})
+
+         created_post = schemas.Post(**res.json())
+         assert res.status_code == 201
+         assert created_post.title == title
+         assert created_post.content == content
+         assert created_post.published == published
+         assert created_post.owner_id == test_user['id']
+     ```
   
 
 + [x] 6. **Use user locale**
